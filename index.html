@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>習俗對對碰</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: "標楷體", "DFKai-SB", "BiauKai", "KaiTi", Kai, serif;
+            background-color: #fef5e4;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 200, 124, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 100, 100, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+            color: #5c2c0c;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 標題樣式 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 4.5rem;
+            color: #e63946;
+            text-shadow: 3px 3px 0px #ffba08, 6px 6px 0px rgba(0, 0, 0, 0.1);
+            letter-spacing: 5px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .header h1::before, .header h1::after {
+            content: "❖";
+            color: #ff9e00;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+        }
+
+        .header h1::before {
+            left: -60px;
+        }
+
+        .header h1::after {
+            right: -60px;
+        }
+
+        /* 控制面板樣式 - 還原原本大小 */
+        .controls-panel {
+            background-color: rgba(255, 235, 205, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.15);
+            border: 3px solid #ffba08;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .control-label {
+            font-size: 1.8rem;
+            color: #d00000;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 0px #ffba08;
+        }
+
+        .timer-display {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #e63946;
+            background-color: #fff9e6;
+            padding: 10px 25px;
+            border-radius: 15px;
+            border: 3px solid #ff9e00;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer-display.warning {
+            color: #e63946;
+            background-color: #ffe6e6;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pairs-display {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #5c2c0c;
+            background-color: #fff9e6;
+            padding: 10px 25px;
+            border-radius: 15px;
+            border: 3px solid #ff9e00;
+            min-width: 160px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .pairs-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .pairs-slider {
+            width: 200px;
+            height: 25px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #ff9e00, #e63946);
+            border-radius: 15px;
+            outline: none;
+        }
+
+        .pairs-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #5c2c0c;
+            border: 3px solid #ffba08;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 限時選項 */
+        .time-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 180px;
+        }
+
+        .time-select {
+            font-size: 1.6rem;
+            font-family: "標楷體", "DFKai-SB", "BiauKai", "KaiTi", Kai, serif;
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 3px solid #ff9e00;
+            background-color: #fff9e6;
+            color: #5c2c0c;
+            cursor: pointer;
+            text-align: center;
+            outline: none;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .time-select:focus {
+            border-color: #e63946;
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 25px;
+        }
+
+        .game-btn {
+            padding: 15px 35px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .start-btn {
+            background: linear-gradient(to bottom, #ff9e00, #e63946);
+            color: #fff9e6;
+            border: 3px solid #ffba08;
+        }
+
+        .restart-btn {
+            background: linear-gradient(to bottom, #5c2c0c, #a86423);
+            color: #ffba08;
+            border: 3px solid #ff9e00;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .game-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* 遊戲區域樣式 - 還原原本大小 */
+        .game-area {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .game-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .column-title {
+            font-size: 2.5rem;
+            color: #d00000;
+            background-color: #ffedcc;
+            padding: 15px 40px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 3px solid #ff9e00;
+            text-shadow: 2px 2px 0px #ffba08;
+            position: relative;
+        }
+
+        .column-title::before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #e63946;
+            border-radius: 50%;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .column-title::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff9e00;
+            border-radius: 50%;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            width: 100%;
+            min-height: 300px;
+            padding: 25px;
+            background-color: rgba(255, 235, 205, 0.8);
+            border-radius: 20px;
+            border: 3px solid #ff9e00;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 卡牌樣式 - 還原原本大小 */
+        .card {
+            aspect-ratio: 3/4;
+            background: linear-gradient(145deg, #fff9e6, #ffedcc);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #5c2c0c;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.selected {
+            border-color: #ffba08;
+            background: linear-gradient(145deg, #fff0d6, #ffd699);
+            box-shadow: 0 0 20px rgba(255, 186, 8, 0.7);
+        }
+
+        .card.matched {
+            visibility: hidden;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .card.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 搖擺動畫 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .card.shake {
+            animation: shake 0.5s ease;
+            border-color: #e63946;
+        }
+
+        /* 煙花特效 */
+        .firework {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes firework {
+            0% { 
+                transform: translate(0, 0); 
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)); 
+                opacity: 0;
+                width: 2px;
+                height: 2px;
+            }
+        }
+
+        /* 大型煙花特效容器 */
+        .fireworks-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .big-firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @keyframes bigFirework {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--big-tx), var(--big-ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 簡短遊戲提示 */
+        .game-hint {
+            text-align: center;
+            font-size: 1.6rem;
+            color: #a86423;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* 時間條 */
+        .time-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #ffedcc;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+            border: 2px solid #ff9e00;
+        }
+        
+        .time-bar {
+            height: 100%;
+            background: linear-gradient(to right, #ff9e00, #e63946);
+            width: 100%;
+            border-radius: 10px;
+            transition: width 1s linear;
+        }
+
+        /* 遊戲訊息框 */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 235, 205, 0.98);
+            padding: 40px;
+            border-radius: 25px;
+            border: 5px solid #ff9e00;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 50px rgba(255, 186, 8, 0.8);
+            display: none;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .message-box h2 {
+            font-size: 3rem;
+            color: #e63946;
+            margin-bottom: 20px;
+        }
+        
+        .message-box p {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #5c2c0c;
+        }
+        
+        .message-box .stats {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            background-color: #fff9e6;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #ffba08;
+        }
+        
+        .close-btn {
+            padding: 15px 40px;
+            font-size: 1.8rem;
+            background: linear-gradient(to bottom, #ff9e00, #e63946);
+            color: #fff9e6;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        /* 裝飾元素 */
+        .decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.1;
+            font-size: 3rem;
+            color: #e63946;
+        }
+
+        .dec-1 { top: 10%; left: 5%; transform: rotate(15deg); }
+        .dec-2 { top: 15%; right: 8%; transform: rotate(-10deg); }
+        .dec-3 { bottom: 20%; left: 7%; transform: rotate(25deg); }
+        .dec-4 { bottom: 15%; right: 10%; transform: rotate(-20deg); }
+
+        /* 響應式設計 - 保持基本響應性 */
+        @media (max-width: 1100px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.8rem;
+                letter-spacing: 3px;
+            }
+            
+            .header h1::before, .header h1::after {
+                font-size: 1.8rem;
+            }
+            
+            .header h1::before {
+                left: -40px;
+            }
+            
+            .header h1::after {
+                right: -40px;
+            }
+            
+            .controls-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .buttons-container {
+                justify-content: center;
+            }
+            
+            .timer-display, .pairs-display {
+                font-size: 2.2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .game-btn {
+                width: 80%;
+            }
+            
+            .pairs-slider {
+                width: 80%;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .card {
+                font-size: 1.4rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 裝飾元素 -->
+        <div class="decoration dec-1">❦</div>
+        <div class="decoration dec-2">囍</div>
+        <div class="decoration dec-3">福</div>
+        <div class="decoration dec-4">春</div>
+        
+        <!-- 煙花特效容器 -->
+        <div class="fireworks-container" id="fireworks-container"></div>
+        
+        <!-- 遊戲訊息框 -->
+        <div class="message-box" id="message-box">
+            <h2 id="message-title">恭喜！配對成功！</h2>
+            <div class="stats">
+                <p>配對成功: <span id="matched-count">0</span> / <span id="total-pairs">0</span> 對</p>
+                <p>剩餘時間: <span id="remaining-time">0</span> 秒</p>
+            </div>
+            <p id="message-content">您成功在時間內完成了所有配對！</p>
+            <button class="close-btn" id="close-btn">重新開始</button>
+        </div>
+        
+        <!-- 標題 -->
+        <header class="header">
+            <h1>習俗對對碰</h1>
+            <div class="game-hint">從左右兩側各點選一張卡牌進行配對，在時間內完成所有配對！</div>
+        </header>
+        
+        <!-- 控制面板 -->
+        <section class="controls-panel">
+            <div class="control-group">
+                <div class="control-label">剩餘時間</div>
+                <div class="timer-display" id="timer">20 秒</div>
+                <div class="time-bar-container">
+                    <div class="time-bar" id="time-bar"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">卡牌對數</div>
+                <div class="pairs-display" id="pairs-display">5 對</div>
+                <div class="pairs-control">
+                    <span>5</span>
+                    <input type="range" id="pairs-slider" class="pairs-slider" min="5" max="8" value="5" step="1">
+                    <span>8</span>
+                </div>
+            </div>
+            
+            <div class="time-options">
+                <div class="control-label">限時選擇</div>
+                <select id="time-select" class="time-select">
+                    <option value="20">20 秒</option>
+                    <option value="15">15 秒</option>
+                    <option value="10">10 秒</option>
+                </select>
+            </div>
+            
+            <div class="buttons-container">
+                <button id="start-btn" class="game-btn start-btn">開始遊戲</button>
+                <button id="restart-btn" class="game-btn restart-btn">重新開始</button>
+            </div>
+        </section>
+        
+        <!-- 遊戲區域 -->
+        <section class="game-area">
+            <div class="game-column">
+                <div class="column-title">節日</div>
+                <div class="cards-container" id="festival-cards"></div>
+            </div>
+            
+            <div class="game-column">
+                <div class="column-title">習俗</div>
+                <div class="cards-container" id="custom-cards"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 從Excel表格中獲取的數據
+        const originalData = [
+            { festival: "春節", custom: "貼春聯" },
+            { festival: "元宵節", custom: "猜燈謎" },
+            { festival: "清明節", custom: "掃墓" },
+            { festival: "端午節", custom: "賽龍舟" },
+            { festival: "中秋節", custom: "賞月" },
+            { festival: "重陽節", custom: "登高" },
+            { festival: "冬至", custom: "吃湯丸" },
+            { festival: "除夕", custom: "打掃" },
+            { festival: "七夕節", custom: "拜織女" },
+            { festival: "盂蘭節", custom: "燒紙祭祖" }
+        ];
+        
+        // 遊戲狀態變量
+        let gameStarted = false;
+        let gameTimer = null;
+        let seconds = 20;
+        let maxSeconds = 20;
+        let selectedFestivalCard = null;
+        let selectedCustomCard = null;
+        let matchedPairs = 0;
+        let totalPairs = 5;
+        let gameData = [];
+        
+        // DOM元素
+        const timerDisplay = document.getElementById('timer');
+        const timeBar = document.getElementById('time-bar');
+        const pairsDisplay = document.getElementById('pairs-display');
+        const pairsSlider = document.getElementById('pairs-slider');
+        const timeSelect = document.getElementById('time-select');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const festivalCardsContainer = document.getElementById('festival-cards');
+        const customCardsContainer = document.getElementById('custom-cards');
+        const fireworksContainer = document.getElementById('fireworks-container');
+        const messageBox = document.getElementById('message-box');
+        const messageTitle = document.getElementById('message-title');
+        const messageContent = document.getElementById('message-content');
+        const matchedCountDisplay = document.getElementById('matched-count');
+        const totalPairsDisplay = document.getElementById('total-pairs');
+        const remainingTimeDisplay = document.getElementById('remaining-time');
+        const closeBtn = document.getElementById('close-btn');
+        
+        // 初始化遊戲
+        function initGame() {
+            // 重置遊戲狀態
+            clearInterval(gameTimer);
+            gameStarted = false;
+            
+            // 獲取選擇的時間
+            maxSeconds = parseInt(timeSelect.value);
+            seconds = maxSeconds;
+            
+            selectedFestivalCard = null;
+            selectedCustomCard = null;
+            matchedPairs = 0;
+            
+            // 更新計時器顯示
+            updateTimerDisplay();
+            
+            // 重置時間條
+            timeBar.style.width = '100%';
+            timeBar.style.transition = 'none';
+            
+            // 獲取選擇的卡牌對數
+            totalPairs = parseInt(pairsSlider.value);
+            pairsDisplay.textContent = `${totalPairs} 對`;
+            
+            // 生成遊戲數據
+            generateGameData();
+            
+            // 生成卡牌
+            generateCards();
+            
+            // 啟用開始按鈕
+            startBtn.disabled = false;
+            startBtn.textContent = "開始遊戲";
+            
+            // 移除警告樣式
+            timerDisplay.classList.remove('warning');
+            
+            // 隱藏訊息框
+            messageBox.style.display = "none";
+            
+            // 清除所有煙花
+            clearFireworks();
+        }
+        
+        // 更新計時器顯示
+        function updateTimerDisplay() {
+            timerDisplay.textContent = `${seconds} 秒`;
+            
+            // 當時間少於5秒時添加警告效果
+            if (seconds <= 5) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+            
+            // 更新時間條
+            const percentage = (seconds / maxSeconds) * 100;
+            timeBar.style.width = `${percentage}%`;
+            
+            // 根據剩餘時間改變顏色
+            if (seconds <= 5) {
+                timeBar.style.background = 'linear-gradient(to right, #e63946, #d00000)';
+            } else if (seconds <= maxSeconds * 0.5) {
+                timeBar.style.background = 'linear-gradient(to right, #ff9e00, #e63946)';
+            } else {
+                timeBar.style.background = 'linear-gradient(to right, #ff9e00, #e63946)';
+            }
+        }
+        
+        // 生成遊戲數據
+        function generateGameData() {
+            gameData = [];
+            
+            // 如果需要的對數大於原始數據長度，則重複使用原始數據
+            const repetitions = Math.ceil(totalPairs / originalData.length);
+            
+            for (let i = 0; i < repetitions; i++) {
+                // 打亂原始數據順序
+                const shuffledData = [...originalData].sort(() => Math.random() - 0.5);
+                
+                // 將打亂後的數據添加到遊戲數據中
+                shuffledData.forEach(item => {
+                    if (gameData.length < totalPairs) {
+                        gameData.push({
+                            id: gameData.length,
+                            festival: item.festival,
+                            custom: item.custom
+                        });
+                    }
+                });
+            }
+            
+            // 再次打亂遊戲數據
+            gameData = gameData.sort(() => Math.random() - 0.5);
+        }
+        
+        // 生成卡牌
+        function generateCards() {
+            // 清空容器
+            festivalCardsContainer.innerHTML = '';
+            customCardsContainer.innerHTML = '';
+            
+            // 根據卡牌數量調整網格佈局
+            const gridColumns = totalPairs <= 6 ? 3 : 4;
+            festivalCardsContainer.style.gridTemplateColumns = `repeat(${gridColumns}, minmax(150px, 1fr))`;
+            customCardsContainer.style.gridTemplateColumns = `repeat(${gridColumns}, minmax(150px, 1fr))`;
+            
+            // 創建節日卡牌
+            gameData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card festival-card';
+                card.dataset.id = item.id;
+                card.textContent = item.festival;
+                
+                card.addEventListener('click', () => selectFestivalCard(card));
+                festivalCardsContainer.appendChild(card);
+            });
+            
+            // 創建習俗卡牌
+            // 先複製一份遊戲數據並打亂順序
+            const shuffledCustoms = [...gameData].sort(() => Math.random() - 0.5);
+            
+            shuffledCustoms.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card custom-card';
+                card.dataset.id = item.id;
+                card.textContent = item.custom;
+                
+                card.addEventListener('click', () => selectCustomCard(card));
+                customCardsContainer.appendChild(card);
+            });
+        }
+        
+        // 選擇節日卡牌
+        function selectFestivalCard(card) {
+            if (!gameStarted || card.classList.contains('matched') || card.classList.contains('disabled')) return;
+            
+            // 如果已經選中了這張卡，則取消選擇
+            if (selectedFestivalCard === card) {
+                card.classList.remove('selected');
+                selectedFestivalCard = null;
+                return;
+            }
+            
+            // 如果已經選中了另一張節日卡，先取消選擇
+            if (selectedFestivalCard) {
+                selectedFestivalCard.classList.remove('selected');
+            }
+            
+            // 選中新的卡牌
+            card.classList.add('selected');
+            selectedFestivalCard = card;
+            
+            // 檢查配對
+            checkMatch();
+        }
+        
+        // 選擇習俗卡牌
+        function selectCustomCard(card) {
+            if (!gameStarted || card.classList.contains('matched') || card.classList.contains('disabled')) return;
+            
+            // 如果已經選中了這張卡，則取消選擇
+            if (selectedCustomCard === card) {
+                card.classList.remove('selected');
+                selectedCustomCard = null;
+                return;
+            }
+            
+            // 如果已經選中了另一張習俗卡，先取消選擇
+            if (selectedCustomCard) {
+                selectedCustomCard.classList.remove('selected');
+            }
+            
+            // 選中新的卡牌
+            card.classList.add('selected');
+            selectedCustomCard = card;
+            
+            // 檢查配對
+            checkMatch();
+        }
+        
+        // 檢查配對
+        function checkMatch() {
+            // 如果兩張卡都已被選中
+            if (selectedFestivalCard && selectedCustomCard) {
+                const festivalId = parseInt(selectedFestivalCard.dataset.id);
+                const customId = parseInt(selectedCustomCard.dataset.id);
+                
+                // 檢查是否匹配
+                if (festivalId === customId) {
+                    // 配對成功
+                    setTimeout(() => {
+                        // 添加匹配成功樣式
+                        selectedFestivalCard.classList.add('matched');
+                        selectedCustomCard.classList.add('matched');
+                        
+                        // 創建煙花特效
+                        createFireworks(selectedFestivalCard);
+                        createFireworks(selectedCustomCard);
+                        
+                        // 如果是最後一對匹配，創建大型煙花
+                        if (matchedPairs + 1 === totalPairs) {
+                            setTimeout(() => {
+                                createBigFireworks();
+                                endGame(true);
+                            }, 300);
+                        }
+                        
+                        // 重置選擇
+                        selectedFestivalCard = null;
+                        selectedCustomCard = null;
+                        
+                        // 更新匹配對數
+                        matchedPairs++;
+                        
+                        // 檢查遊戲是否完成
+                        if (matchedPairs === totalPairs) {
+                            // 遊戲完成，但會在上面的大煙花後結束
+                        }
+                    }, 500);
+                } else {
+                    // 配對失敗，搖擺卡牌
+                    selectedFestivalCard.classList.add('shake');
+                    selectedCustomCard.classList.add('shake');
+                    
+                    // 重置選擇
+                    setTimeout(() => {
+                        selectedFestivalCard.classList.remove('selected', 'shake');
+                        selectedCustomCard.classList.remove('selected', 'shake');
+                        selectedFestivalCard = null;
+                        selectedCustomCard = null;
+                    }, 1000);
+                }
+            }
+        }
+        
+        // 創建煙花特效
+        function createFireworks(card) {
+            const cardRect = card.getBoundingClientRect();
+            const centerX = cardRect.left + cardRect.width / 2;
+            const centerY = cardRect.top + cardRect.height / 2;
+            
+            // 創建多個煙花粒子
+            for (let i = 0; i < 12; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                
+                // 隨機顏色
+                const colors = ['#e63946', '#ff9e00', '#ffba08', '#d00000', '#ff6b6b', '#ff9a76'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.backgroundColor = color;
+                
+                // 隨機方向
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 30 + Math.random() * 70;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                firework.style.setProperty('--tx', `${tx}px`);
+                firework.style.setProperty('--ty', `${ty}px`);
+                
+                // 設置初始位置
+                firework.style.left = `${centerX}px`;
+                firework.style.top = `${centerY}px`;
+                
+                // 添加到頁面
+                document.body.appendChild(firework);
+                
+                // 隨機動畫持續時間
+                const duration = 0.6 + Math.random() * 0.4;
+                firework.style.animation = `firework ${duration}s ease-out forwards`;
+                
+                // 動畫結束後移除元素
+                setTimeout(() => {
+                    if (firework.parentNode) {
+                        firework.remove();
+                    }
+                }, duration * 1000);
+            }
+        }
+        
+        // 創建大型煙花特效（遊戲完成時）
+        function createBigFireworks() {
+            // 創建多個大型煙花
+            for (let f = 0; f < 8; f++) {
+                setTimeout(() => {
+                    // 煙花起始位置
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = window.innerHeight;
+                    
+                    // 創建煙花粒子
+                    for (let i = 0; i < 25; i++) {
+                        const firework = document.createElement('div');
+                        firework.className = 'big-firework';
+                        
+                        // 隨機顏色
+                        const colors = ['#e63946', '#ff9e00', '#ffba08', '#d00000', '#ff9a76', '#ffd166'];
+                        const color = colors[Math.floor(Math.random() * colors.length)];
+                        firework.style.backgroundColor = color;
+                        
+                        // 隨機方向
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = 100 + Math.random() * 200;
+                        const tx = Math.cos(angle) * distance;
+                        const ty = Math.sin(angle) * distance - 100; // 向上偏移
+                        
+                        firework.style.setProperty('--big-tx', `${tx}px`);
+                        firework.style.setProperty('--big-ty', `${ty}px`);
+                        
+                        // 設置初始位置
+                        firework.style.left = `${startX}px`;
+                        firework.style.top = `${startY}px`;
+                        
+                        // 添加到煙花容器
+                        fireworksContainer.appendChild(firework);
+                        
+                        // 隨機動畫持續時間
+                        const duration = 1.2 + Math.random() * 0.8;
+                        firework.style.animation = `bigFirework ${duration}s ease-out forwards`;
+                        
+                        // 動畫結束後移除元素
+                        setTimeout(() => {
+                            if (firework.parentNode) {
+                                firework.remove();
+                            }
+                        }, duration * 1000);
+                    }
+                }, f * 300);
+            }
+        }
+        
+        // 清除所有煙花
+        function clearFireworks() {
+            fireworksContainer.innerHTML = '';
+            
+            // 清除頁面上的小型煙花
+            const smallFireworks = document.querySelectorAll('.firework');
+            smallFireworks.forEach(firework => {
+                if (firework.parentNode) {
+                    firework.remove();
+                }
+            });
+        }
+        
+        // 開始遊戲
+        function startGame() {
+            if (gameStarted) return;
+            
+            gameStarted = true;
+            startBtn.disabled = true;
+            startBtn.textContent = "遊戲進行中";
+            
+            // 重置時間條過渡效果
+            timeBar.style.transition = 'width 1s linear';
+            
+            // 啟動倒數計時器
+            gameTimer = setInterval(() => {
+                seconds--;
+                updateTimerDisplay();
+                
+                // 時間到
+                if (seconds <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+        }
+        
+        // 結束遊戲
+        function endGame(isWin) {
+            clearInterval(gameTimer);
+            gameStarted = false;
+            
+            // 禁用所有卡牌
+            const allCards = document.querySelectorAll('.card');
+            allCards.forEach(card => {
+                card.classList.add('disabled');
+            });
+            
+            // 顯示訊息框
+            matchedCountDisplay.textContent = matchedPairs;
+            totalPairsDisplay.textContent = totalPairs;
+            remainingTimeDisplay.textContent = seconds;
+            
+            if (isWin) {
+                messageTitle.textContent = "恭喜！配對成功！";
+                messageContent.textContent = `您成功在${maxSeconds}秒內完成了所有配對！`;
+                createBigFireworks();
+            } else {
+                messageTitle.textContent = "時間到！遊戲結束";
+                messageContent.textContent = "時間已經用完，請再試一次！";
+            }
+            
+            setTimeout(() => {
+                messageBox.style.display = "block";
+                startBtn.disabled = false;
+                startBtn.textContent = "開始遊戲";
+            }, isWin ? 1500 : 500);
+        }
+        
+        // 事件監聽器
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', initGame);
+        
+        pairsSlider.addEventListener('input', function() {
+            pairsDisplay.textContent = `${this.value} 對`;
+        });
+        
+        pairsSlider.addEventListener('change', function() {
+            if (!gameStarted) {
+                initGame();
+            }
+        });
+        
+        timeSelect.addEventListener('change', function() {
+            if (!gameStarted) {
+                initGame();
+            }
+        });
+        
+        closeBtn.addEventListener('click', initGame);
+        
+        // 初始化遊戲
+        initGame();
+    </script>
+</body>
+</html>
